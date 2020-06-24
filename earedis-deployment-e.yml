@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: earedis
-        image: localhost:5001/eaasapi/earedis
+        image: localhost:5001/eaasapi-e/earedis
         ports:
         - name: redis
           containerPort: 6379
