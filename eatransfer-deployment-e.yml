@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eatransfer-e
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eatransfer-e
+  template:
+    metadata:
+      labels:
+        app: eatransfer-e
+    spec:
+      containers:
+      - name: eatransfer
+        image: localhost:5001/eaasapi/eatransfer
+        ports:
+        - name: ssh
+          containerPort: 22
+        volumeMounts:
+        - mountPath: /home/transfer/portal
+          name: eapersist
+
+      volumes:
+       - name: eapersist
+         hostPath:
+           path: /srv/persist/ACCOUNT/www
+           type: Directory
