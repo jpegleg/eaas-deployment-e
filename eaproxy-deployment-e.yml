@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eaproxy-e
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: eaproxy-e
+  template:
+    metadata:
+      labels:
+        app: eaproxy-e
+    spec:
+      containers:
+      - name: eaproxy
+        image: localhost:5001/eaasapi/eaproxy
+        ports:
+        - name: haproxybeast
+          containerPort: 666
