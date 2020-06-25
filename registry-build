@@ -4,6 +4,9 @@ docker build -t eanginx .
 cd ../eaasapi
 docker build -t eaasapi .
 cd ..
+cd earedis
+docker build -t earedis .
+cd ..
 
 echo "Checking for registry."
 
@@ -19,6 +22,11 @@ docker tag eanginx localhost:5001/eaasapi-e/eanginx
 docker push localhost:5001/eaasapi-e/eanginx
 docker tag eaasapi localhost:5001/eaasapi-e/eaasapi
 docker push localhost:5001/eaasapi-e/eaasapi
+docker tag earedis localhost:5001/eaasapi-e/earedis
+docker push localhost:5001/eaasapi-e/earedis
+
+microk8s.kubectl create -f earedis-deployment-e.yml || echo "exit code $? on create of earedis deployment e"
+microk8s.kubectl expose deployment/earedis-e
 
 for x in {1..7}; do
   microk8s.kubectl create -f eaas-deployment-e-$x.yml || echo "exit code $? on create of eaas deployment e-$x"
