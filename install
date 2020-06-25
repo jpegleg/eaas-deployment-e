@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+mkdir -p /srv/persist/ACCOUNT/data/
+mkdir -p /srv/persist/ACCOUNT/www/transfer/
+mkdir -p /srv/persist/ACCOUNT/var/tmp/
+mkdir -p /srv/persist/ACCOUNT/log/
+mkdir -p /srv/persist/ACCOUNT/bin/
+echo "WARN: opening up /srv/persist/ACCOUNT/www/transfer to 777 permissions for sftp users!"
+chmod 777 /srv/persist/ACCOUNT/www/transfer 
+echo "WARN: opening up /srv/persist/ACCOUNT/var/tmp to 777 permissions for backend application users!"
+chmod 777 /srv/persist/ACCOUNT/var/tmp
+
+chmod +x ACCOUNT-api || echo "WARN: no default backend ACCOUNT-api found found in $(pwd)"
+cp ACCOUNT-api /srv/persist/ACCOUNT/bin/ || echo "WARN: the default backend was not copied to /srv/persist/ACCOUNT/bin/"
+
+apt-get install -y apt-transport-https
+apt-get install -y aptitude 
+aptitude install -y ufw 
+
+ufw allow 30444
+ufw allow 30023
+ufw enable
+ufw reload
+
+chmod +x registry-build
+chmod +x automatic-updates
+chmod +x registry-enforce
+./registry-build
+cp automatic-updates /etc/cron.weekly/
+cp registry-enforce /usr/local/sbin/
+
+croncheck=$(grep registry-enforce /etc/crontab | wc -l)
+
+if [ "$croncheck" = 1 ]; then
+  echo "WARN: a crontab of registry-enforce was found, not adding another registry-enforce. You may want to ensure that the existing registry enforce enforcing everything!"
+elif (( "$crontabckeck" >= "2" )); then
+  echo "ERROR: too many cron jobs named registry-enforce were found! Please review /etc/crontab for registry-enforce jobs!"
+else
+  echo "*/1 * * * * /usr/local/sbin/registry-enforce" > /etc/crontab
+fi
+
+echo "Creating a complete backup of deployment files in ~/eaas-deployment-e if that directory isn't this one!"
+mkdir ~/eaas-deployment-e/ 2>/dev/null
+cp -r ./* ~/eaas-deployment-e/ 2>/dev/null 
+echo
+echo -e "\e[32mInstall complete!\e[0m"
+echo
