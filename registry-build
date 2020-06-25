@@ -31,8 +31,14 @@ docker build -t eaproxy .
 cd ..
 docker tag eaproxy localhost:5001/eaasapi-e/eaproxy
 docker push localhost:5001/eaasapi-e/eaproxy
-microk8s.kubectl create -f eaproxy-deployment-e.yml || echo "exit code $? on create of eaproxy deployment e"
-microk8s.kubectl expose deployment/eaproxy-e
+
+count=1
+
+for x in $(microk8s.kubectl get services | grep eaasapi-e | awk '{print $3}'); do
+  microk8s.kubectl create -f eaproxy-deployment-e-$count.yml || echo "exit code $? on create of eaproxy deployment e-$count"
+  microk8s.kubectl expose deployment/eaproxy-e-$count
+  count=$(("$count" + 1))
+done
 
 microk8s.kubectl create -f eaas-service.yml || echo "exit code $? on create of eaas service"
 
@@ -43,5 +49,4 @@ cd ..
 docker tag eatransfer localhost:5001/eaasapi-e/eatransfer
 docker push localhost:5001/eaasapi-e/eatransfer
 microk8s.kubectl create -f eatransfer-deployment-e.yml || echo "exit code $? on create of transfer portal sftp deployment e"
-
 microk8s.kubectl create -f transfer-service.yml || echo "exit code $? on create of transfer portal sftp deployment e"
