@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: eaasapi-e
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: eaasapi-e
