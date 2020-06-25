@@ -30,7 +30,7 @@ microk8s.kubectl expose deployment/earedis-e
 
 for x in {1..7}; do
   microk8s.kubectl create -f eaas-deployment-e-$x.yml || echo "exit code $? on create of eaas deployment e-$x"
-  microk8s.kubectl expose deployment/eaas-e-$x
+  microk8s.kubectl expose deployment/eaasapi-e-$x
 done
 
 count=1
