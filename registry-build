@@ -38,7 +38,7 @@ cd ..
 docker tag eaproxy localhost:5001/eaasapi-e/eaproxy
 docker push localhost:5001/eaasapi-e/eaproxy
 
-microk8s.kubectl create -f eaproxy-deployment-e-$count.yml || echo "exit code $? on create of eaproxy deployment e"
+microk8s.kubectl create -f eaproxy-deployment-e.yml || echo "exit code $? on create of eaproxy deployment e"
 microk8s.kubectl expose deployment/eaproxy-e
 
 microk8s.kubectl create -f eaas-service.yml || echo "exit code $? on create of eaas service"
