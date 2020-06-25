@@ -40,6 +40,12 @@ spec:
         - mountPath: /usr/local/bin/
           name: binmount
 
+      - name: earedis
+        image: localhost:5001/eaasapi-e/earedis
+        volumeMounts:
+        - mountPath: /data
+          name: datamount
+
       volumes:
        - name: eapersist
          hostPath:
@@ -56,4 +62,8 @@ spec:
        - name: binmount
          hostPath:
            path: /srv/persist/ACCOUNT/bin
+           type: Directory    
+       - name: datamount
+         hostPath:
+           path: /srv/persist/ACCOUNT/data
            type: Directory    
