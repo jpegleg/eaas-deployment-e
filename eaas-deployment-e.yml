@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: eaasapi-e
 spec:
-  replicas: 1
+  replicas: 7
   selector:
     matchLabels:
       app: eaasapi-e
@@ -40,15 +40,6 @@ spec:
         - mountPath: /usr/local/bin/
           name: binmount
 
-      - name: earedis
-        image: localhost:5001/eaasapi-e/earedis
-        ports:
-        - name: redis
-          containerPort: 6379
-        volumeMounts:
-        - mountPath: /data
-          name: datamount
-
       volumes:
        - name: eapersist
          hostPath:
@@ -66,7 +57,4 @@ spec:
          hostPath:
            path: /srv/persist/ACCOUNT/bin
            type: Directory    
-       - name: datamount
-         hostPath:
-           path: /srv/persist/ACCOUNT/data
-           type: Directory    
+ 
