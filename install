@@ -2,7 +2,7 @@
 mkdir -p /srv/persist/ACCOUNT/data/
 mkdir -p /srv/persist/ACCOUNT/www/transfer/
 mkdir -p /srv/persist/ACCOUNT/var/tmp/
-mkdir -p /srv/persist/ACCOUNT/log/
+mkdir -p /srv/persist/ACCOUNT/log/1 /srv/persist/ACCOUNT/log/2 /srv/persist/ACCOUNT/log/3 /srv/persist/ACCOUNT/log/4 /srv/persist/ACCOUNT/log/5 /srv/persist/ACCOUNT/log/6 /srv/persist/ACCOUNT/log/7
 mkdir -p /srv/persist/ACCOUNT/bin/
 echo "WARN: opening up /srv/persist/ACCOUNT/www/transfer to 777 permissions for sftp users!"
 chmod 777 /srv/persist/ACCOUNT/www/transfer 
