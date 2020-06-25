@@ -4,6 +4,8 @@ CLUSTERIP2 node2
 CLUSTERIP3 node3
 CLUSTERIP4 node4
 CLUSTERIP5 node5
+CLUSTERIP6 node6
+CLUSTERIP7 node7
 
 # The following lines are desirable for IPv6 capable hosts
 ::1     ip6-localhost ip6-loopback
