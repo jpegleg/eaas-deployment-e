@@ -19,26 +19,27 @@ docker tag eanginx localhost:5001/eaasapi-e/eanginx
 docker push localhost:5001/eaasapi-e/eanginx
 docker tag eaasapi localhost:5001/eaasapi-e/eaasapi
 docker push localhost:5001/eaasapi-e/eaasapi
-microk8s.kubectl create -f eaas-deployment-e.yml || echo "exit code $? on create of eaas deployment e"
-microk8s.kubectl expose deployment/eaasapi-e
+
+for x in {1..7}; do
+  microk8s.kubectl create -f eaas-deployment-e-$x.yml || echo "exit code $? on create of eaas deployment e-$x"
+  microk8s.kubectl expose deployment/eaas-e-$x
+done
+
 count=1
-for x in $(microk8s.kubectl get services | grep eaasapi-e | awk '{print $3}'); do
-  sed -i "s/CLUSTERIP$count/$x/g" eaproxy/haproxy.cfg
+
+for replica in $(microk8s.kubectl get services | grep eaasapi-e | awk '{print $3}'); do
+  sed -i "s/CLUSTERIP$count/$replica/g" eaproxy/haproxy.cfg
   count=$(("$count" + 1))
 done
+
 cd eaproxy
 docker build -t eaproxy .
 cd ..
 docker tag eaproxy localhost:5001/eaasapi-e/eaproxy
 docker push localhost:5001/eaasapi-e/eaproxy
 
-count=1
-
-for x in $(microk8s.kubectl get services | grep eaasapi-e | awk '{print $3}'); do
-  microk8s.kubectl create -f eaproxy-deployment-e-$count.yml || echo "exit code $? on create of eaproxy deployment e-$count"
-  microk8s.kubectl expose deployment/eaproxy-e-$count
-  count=$(("$count" + 1))
-done
+microk8s.kubectl create -f eaproxy-deployment-e-$count.yml || echo "exit code $? on create of eaproxy deployment e"
+microk8s.kubectl expose deployment/eaproxy-e
 
 microk8s.kubectl create -f eaas-service.yml || echo "exit code $? on create of eaas service"
 
