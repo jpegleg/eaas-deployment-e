@@ -22,7 +22,7 @@ spec:
           containerPort: 80
         volumeMounts:
         - mountPath: /var/log/nginx
-          name: nginxmount
+          name: nginxmount4
         - mountPath: /var/www/html/ACCOUNT
           name: eapersist
         - mountPath: /var/tmp
@@ -32,7 +32,7 @@ spec:
         image: localhost:5001/eaasapi-e/eaasapi
         volumeMounts:
         - mountPath: /var/log/nginx
-          name: nginxmount
+          name: nginxmount4
         - mountPath: /var/www/html/ACCOUNT
           name: eapersist
         - mountPath: /var/tmp
@@ -49,9 +49,9 @@ spec:
          hostPath:
            path: /srv/persist/ACCOUNT/var/tmp
            type: Directory    
-       - name: nginxmount
+       - name: nginxmount4
          hostPath:
-           path: /srv/persist/ACCOUNT/log
+           path: /srv/persist/ACCOUNT/log/4
            type: Directory    
        - name: binmount
          hostPath:
