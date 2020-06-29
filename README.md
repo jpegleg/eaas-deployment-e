@@ -9,3 +9,7 @@ Differences from deployment d in deployment e:
 - eaas api backend does not use gpg
 - redis is available to the eaas api backend
 
+Ideas in progress // TODO:
+
+- PHP fpm
+- nginx CGI templates
