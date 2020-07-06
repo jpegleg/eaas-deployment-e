@@ -12,4 +12,3 @@ Differences from deployment d in deployment e:
 Ideas in progress // TODO:
 
 - PHP fpm
-- nginx CGI templates
