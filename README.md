@@ -11,7 +11,7 @@ Differences from deployment d in deployment e:
 
 ...
 
-Ideas in progress // TODO:
+In progress
 
-- include PHP fpm template
-- Apache2 CGI template ( in progress eacgi container )
+- include PHP fpm template (eaphp)
+- Apache2 CGI template (eacgi)
