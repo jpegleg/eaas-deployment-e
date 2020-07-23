@@ -4,7 +4,7 @@ LABEL version="1.0"
 LABEL description="EaaS API CGI"
 
 RUN apt-get update && apt-get install -y apt-transport-https aptitude && aptitude install -y openssl apache2
-COPY httpd.conf /etc/apache2/httpd.conf
+COPY apache2.conf /etc/apache2/apache2.conf
 COPY cgi-sec.conf /etc/
 RUN ln -sf /dev/stdout /var/log/cgi.log
 
