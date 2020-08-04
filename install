@@ -25,6 +25,7 @@ aptitude install -y ufw
 ufw allow 30442
 ufw allow 30444
 ufw allow 30023
+ufw allow 30053
 ufw enable
 ufw reload
 
