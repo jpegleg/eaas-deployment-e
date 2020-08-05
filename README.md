@@ -16,4 +16,3 @@ In progress
 
 - PHP fpm template (eaphp)
 - Apache2 CGI template (eacgi)
-- DNS bind centos (eadns)
