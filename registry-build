@@ -40,7 +40,7 @@ for x in {1..7}; do
   microk8s.kubectl expose deployment/eaas-e-$x
 done
 
-for x in {1..3}; do
+for x in {1..7}; do
   microk8s.kubectl create -f eaas-cgi-e-$x.yml || echo "exit code $? on create of eaas deployment cgi e-$x"
   microk8s.kubectl expose deployment/eaascgi-e-$x
 done
