@@ -8,7 +8,6 @@ COPY apache2.conf /etc/apache2/apache2.conf
 COPY cgi-sec.conf /etc/
 COPY serve-cgi-bin.conf /etc/apache2/conf-enabled/
 COPY secp384r1.cgi /var/www/html/
-COPY blockchain.cgi /var/www/html/
 RUN ln -sf /dev/stdout /var/log/cgi.log
 RUN a2enmod cgi
 
