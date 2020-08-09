@@ -1,15 +1,4 @@
-echo "Building containers..."
-cd eanginx
-docker build -t eanginx .
-cd ../eaasapi
-docker build -t eaasapi .
-cd ..
-cd earedis
-docker build -t earedis .
-cd ..
-cd eacgi
-docker build -t eacgi .
-cd ..
+
 
 echo "Checking for registry."
 
@@ -21,6 +10,17 @@ else
   docker run -d --restart unless-stopped -p 5001:5000 registry:2
 fi
 
+echo "Building containers..."
+cd eanginx
+docker build -t eanginx .
+cd ../eaasapi
+docker build -t eaasapi .
+cd ../earedis
+docker build -t earedis .
+cd ../eacgi
+docker build -t eacgi .
+cd ..
+
 docker tag eanginx localhost:5001/eaasapi-e/eanginx
 docker push localhost:5001/eaasapi-e/eanginx
 docker tag eaasapi localhost:5001/eaasapi-e/eaasapi
@@ -31,36 +31,6 @@ docker tag eacgi localhost:5001/eaasapi-e/eacgi
 docker push localhost:5001/eaasapi-e/eacgi
 docker tag eacgiproxy localhost:5001/eaasapi-e/eacgiproxy
 docker push localhost:5001/eaasapi-e/eacgiproxy
-
-microk8s.kubectl create -f earedis-deployment-e.yml || echo "exit code $? on create of earedis deployment e"
-microk8s.kubectl expose deployment/earedis-e
-
-for x in {1..7}; do
-  microk8s.kubectl create -f eaas-deployment-e-$x.yml || echo "exit code $? on create of eaas deployment e-$x"
-  microk8s.kubectl expose deployment/eaas-e-$x
-done
-
-for x in {1..7}; do
-  microk8s.kubectl create -f eaas-cgi-e-$x.yml || echo "exit code $? on create of eaas deployment cgi e-$x"
-  microk8s.kubectl expose deployment/eaascgi-e-$x
-done
-
-count=1
-
-for replica in $(microk8s.kubectl get services | grep eaasapi-e | awk '{print $3}'); do
-  sed -i "s/CLUSTERIP$count/$replica/g" eaproxy/haproxy.cfg
-  sed -i "s/CLUSTERIP$count/$replica/g" eaproxy/hosts
-
-  count=$(("$count" + 1))
-done
-
-count=1
-
-for cgirep in $(microk8s.kubectl get services | grep eaascgi-e | awk '{print $3}'); do
-  sed -i "s/CLUSTERIP$count/$cgirep/g" eacgiproxy/haproxy.cfg
-  sed -i "s/CLUSTERIP$count/$cgirep/g" eaproxy/hosts
-  count=$(("$count" +1))
-done
 
 cd eaproxy
 docker build -t eaproxy .
@@ -74,19 +44,9 @@ cd ..
 docker tag eacgiproxy localhost:5001/eaasapi-e/eacgiproxy
 docker push localhost:5001/eaasapi-e/eacgiproxy
 
-microk8s.kubectl create -f eaproxy-deployment-e.yml || echo "exit code $? on create of eaproxy deployment e"
-microk8s.kubectl expose deployment/eaproxy-e
-microk8s.kubectl create -f eacgiproxy-deployment-e.yml || echo "exit code $? on create of eacgiproxy deployment e"
-microk8s.kubectl expose deployment/eacgiproxy-e
-
-
-microk8s.kubectl create -f eaas-service.yml || echo "exit code $? on create of eaas service"
-
 echo "building transfer portal"
 cd eatransfer
 docker build -t eatransfer .
 cd ..
 docker tag eatransfer localhost:5001/eaasapi-e/eatransfer
 docker push localhost:5001/eaasapi-e/eatransfer
-microk8s.kubectl create -f eatransfer-deployment-e.yml || echo "exit code $? on create of transfer portal sftp deployment e"
-microk8s.kubectl create -f transfer-service.yml || echo "exit code $? on create of transfer portal sftp deployment e"
