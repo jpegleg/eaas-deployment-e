@@ -3,7 +3,7 @@
 if test -f /var/tmp/chain.dat; then
   echo "Content-Type: text/html";
   echo
-  chained="$(date +%Y%m%d%H%M%S%N)_$(openssl rand -hex 128),trxnid=$(sha256sum /var/tmp/chain.dat | cut -d' ' -f1)"
+  chained="$(date +%Y%m%d%H%M%S%N)_$(openssl rand -hex 12),trxnid=$(sha256sum /var/tmp/chain.dat | cut -d' ' -f1)"
   echo $chained >> /var/tmp/chain.dat
   echo $chained
   echo
