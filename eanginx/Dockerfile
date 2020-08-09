@@ -1,4 +1,3 @@
-
 FROM nginx:latest
 LABEL maintainer="carefuldata@protonmail.com""
 LABEL version="1.0"
