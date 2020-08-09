@@ -19,6 +19,12 @@ cd ../earedis
 docker build -t earedis .
 cd ../eacgi
 docker build -t eacgi .
+cd ../eaproxy
+docker build -t eaproxy .
+cd ../eacgiproxy
+docker build -t eacgiproxy .
+cd ../eatransfer
+docker build -t eatransfer .
 cd ..
 
 docker tag eanginx localhost:5001/eaasapi-e/eanginx
@@ -31,24 +37,9 @@ docker tag eacgi localhost:5001/eaasapi-e/eacgi
 docker push localhost:5001/eaasapi-e/eacgi
 docker tag eacgiproxy localhost:5001/eaasapi-e/eacgiproxy
 docker push localhost:5001/eaasapi-e/eacgiproxy
-
-# sed the proxy configs here?
-
-cd eaproxy
-docker build -t eaproxy .
-cd ..
 docker tag eaproxy localhost:5001/eaasapi-e/eaproxy
 docker push localhost:5001/eaasapi-e/eaproxy
-
-cd eacgiproxy
-docker build -t eacgiproxy .
-cd ..
 docker tag eacgiproxy localhost:5001/eaasapi-e/eacgiproxy
 docker push localhost:5001/eaasapi-e/eacgiproxy
-
-echo "building transfer portal"
-cd eatransfer
-docker build -t eatransfer .
-cd ..
 docker tag eatransfer localhost:5001/eaasapi-e/eatransfer
 docker push localhost:5001/eaasapi-e/eatransfer
