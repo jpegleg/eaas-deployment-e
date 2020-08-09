@@ -15,4 +15,3 @@ Differences from deployment d in deployment e:
 In progress
 
 - PHP fpm template (eaphp)
-- Apache2 CGI template (eacgi)
