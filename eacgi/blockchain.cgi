@@ -3,13 +3,16 @@
 if test -f /var/tmp/chain.dat; then
   echo "Content-Type: text/html";
   echo
-  chain=$(sha256sum /var/tmp/chain.dat | cut -d' ' -f1),$(echo $1 | sha256sum | cut -d' ' -f1),$(date +%y%m%d%H%M%S%N)_$(openssl rand -hex 16)_id
-  echo $chain >> /var/tmp/chain.dat
-  echo "$chain"
+  chained="$(date +%Y%m%d%H%M%S%N)_$(openssl rand -hex 128),trxnid=$(sha256sum /var/tmp/chain.dat | cut -d' ' -f1)"
+  echo $chained >> /var/tmp/chain.dat
+  echo $chained
   echo
 else
   echo "Content-Type: text/html";
   echo
-  echo "Chain init at $(date +%y%m%d%H%M%S) with chaos of $(cat /dev/urandom | base64 | fold -128 | head -n1 | tr -d '\n')" | tee /var/tmp/chain.dat
+  chaos=$(cat /dev/urandom | base64 | fold -128 | head -n1)
+  echo $chaos > /var/tmp/chain.dat
+  echo "starting new chain..."
+  echo "seed is $chaos"
   echo
 fi
