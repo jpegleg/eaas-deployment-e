@@ -47,7 +47,7 @@ firewall-cmd --permanent --add-port=80/tcp
 firewall-cmd --permanent --add-port=8080/tcp
 firewall-cmd --permanent --add-port=443/tcp
 # admin
-firewall-cmd --permanent --add-port=22
+firewall-cmd --permanent --add-port=22/tcp
 
 firewall-cmd --reload
 
