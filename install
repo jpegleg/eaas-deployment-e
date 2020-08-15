@@ -68,6 +68,8 @@ else
   docker run -d --restart unless-stopped  -p 127.0.0.1:5000:5000 registry
 fi
 
+docker network create --subnet=172.19.0.0/16 dockernetwork || echo "did not create dockernetwork"
+
 buildlocal eaasapi
 buildlocal eanginx
 buildlocal eaproxy
