@@ -1,4 +1,12 @@
 #!/usr/bin/env bash
+
+buildlocal () {
+  cd $1
+  docker build -t us-sea-dns-1.site:666/"$1"-e .
+  cd ..
+}
+
+
 mkdir -p /srv/persist/ACCOUNT/cgi/
 mkdir -p /srv/persist/ACCOUNT/data/
 mkdir -p /srv/persist/ACCOUNT/bin/
@@ -17,15 +25,49 @@ chmod 777 /srv/persist/ACCOUNT/htdocs
 chmod +x ACCOUNT-api || echo "WARN: no default backend ACCOUNT-api found found in $(pwd)"
 cp ACCOUNT-api /srv/persist/ACCOUNT/bin/ || echo "WARN: the default backend was not copied to /srv/persist/ACCOUNT/bin/"
 
-apt-get install -y apt-transport-https
-apt-get install -y aptitude 
-aptitude install -y ufw 
+yum install -y yum-utils
+yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+yum install -y docker-ce docker-ce-cli containerd.io firewalld
+systemctl start docker
+systemctl enable docker
 
-ufw allow 30442
-ufw allow 30444
-ufw allow 30023
-ufw enable
-ufw reload
+
+# eaas service ports
+firewall-cmd --permanent --add-port=30442/tcp
+firewall-cmd --permanent --add-port=30444/tcp
+firewall-cmd --permanent --add-port=30023/tcp
+# docker ports
+firewall-cmd --permanent --add-port=2376/tcp
+firewall-cmd --permanent --add-port=2377/tcp
+firewall-cmd --permanent --add-port=7946/tcp
+firewall-cmd --permanent --add-port=7946/udp
+firewall-cmd --permanent --add-port=4789/udp
+# web ports
+firewall-cmd --permanent --add-port=80/tcp
+firewall-cmd --permanent --add-port=8080/tcp
+firewall-cmd --permanent --add-port=443/tcp
+# admin
+firewall-cmd --permanent --add-port=22
+
+firewall-cmd --reload
+
+if [ "$1" = "join" ]; then
+docker swarm join \
+    --token $2 \
+    $3:2377
+else
+  docker swarm init > /var/tmp/$(hostname).docker.swarm.init.$(date +%Y%m%d%H%M%S).dat || logger "did not create new swarm"
+fi
+
+buildlocal eaasapi
+buildlocal eanginx
+buildlocal eaproxy
+buildlocal earedis
+buildlocal eatransfer
+buildlocal eacgi
+buildlocal eacgiproxy
+
+docker stack deploy --compose-file eaas-api-e.yml eaas-api-e || echo "failed to deploy swarm stack!"
 
 echo "Creating a complete backup of deployment files in ~/eaas-deployment-e if that directory isn't this one!"
 mkdir ~/eaas-deployment-e/ 2>/dev/null
