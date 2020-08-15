@@ -50,7 +50,7 @@ firewall-cmd --permanent --add-port=22/tcp
 
 firewall-cmd --reload
 
-# prevent exposing the registry on its own execpt for locally, behind haproxy
+# prevent exposing the registry on its own execpt for locally
 iptables -A INPUT -p tcp -s localhost --dport 5000 -j ACCEPT
 iptables -A INPUT -p tcp --dport 5000 -j DROP
 iptables-save > /etc/sysconfig/iptables
