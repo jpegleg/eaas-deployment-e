@@ -2,7 +2,7 @@
 
 buildlocal () {
   cd $1
-  docker build -t us-sea-dns-1.site:666/"$1"-e .
+  docker build -t l127.0.0.1:5000/eaas-api-e/"$1" .
   cd ..
 }
 
@@ -31,7 +31,6 @@ yum install -y docker-ce docker-ce-cli containerd.io firewalld
 systemctl start docker
 systemctl enable docker
 
-
 # eaas service ports
 firewall-cmd --permanent --add-port=30442/tcp
 firewall-cmd --permanent --add-port=30444/tcp
@@ -51,12 +50,19 @@ firewall-cmd --permanent --add-port=22/tcp
 
 firewall-cmd --reload
 
-if [ "$1" = "join" ]; then
-docker swarm join \
-    --token $2 \
-    $3:2377
+# prevent exposing the registry on its own execpt for locally, behind haproxy
+iptables -A INPUT -p tcp -s localhost --dport 5000 -j ACCEPT
+iptables -A INPUT -p tcp --dport 5000 -j DROP
+iptables-save > /etc/sysconfig/iptables
+
+echo "Checking for registry."
+
+reglistener=$(docker container ls | awk '{print $2}' | grep registry | wc -l)
+if [ $reglistener = 1 ]; then
+  echo "local docker registry found..."
 else
-  docker swarm init > /var/tmp/$(hostname).docker.swarm.init.$(date +%Y%m%d%H%M%S).dat || logger "did not create new swarm"
+  echo "No local registry found, starting up local registry."
+  docker run -d --restart unless-stopped -p 5000:5000 registry
 fi
 
 buildlocal eaasapi
@@ -66,8 +72,6 @@ buildlocal earedis
 buildlocal eatransfer
 buildlocal eacgi
 buildlocal eacgiproxy
-
-docker stack deploy --compose-file eaas-api-e.yml eaas-api-e || echo "failed to deploy swarm stack!"
 
 echo "Creating a complete backup of deployment files in ~/eaas-deployment-e if that directory isn't this one!"
 mkdir ~/eaas-deployment-e/ 2>/dev/null
