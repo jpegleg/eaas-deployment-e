@@ -2,6 +2,9 @@
 
 buildlocal () {
   cd $1
+  if [ "$1" = eacgi ]; then
+    chmod +x secp384r1.cgi
+  fi
   docker build -t 127.0.0.1:5000/eaas-api-e/"$1" .
   cd ..
 }
@@ -62,7 +65,7 @@ if [ $reglistener = 1 ]; then
   echo "local docker registry found..."
 else
   echo "No local registry found, starting up local registry."
-  docker run -d --restart unless-stopped -p 5000:5000 registry
+  docker run -d --restart unless-stopped  -p 127.0.0.1:5000:5000 registry
 fi
 
 buildlocal eaasapi
