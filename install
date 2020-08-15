@@ -2,7 +2,7 @@
 
 buildlocal () {
   cd $1
-  docker build -t l127.0.0.1:5000/eaas-api-e/"$1" .
+  docker build -t 127.0.0.1:5000/eaas-api-e/"$1" .
   cd ..
 }
 
