@@ -4,7 +4,7 @@ LABEL version="1.0"
 LABEL description="EaaS API and Transfer Portal"
 
 RUN apt-get update && apt-get install -y apt-transport-https aptitude
-RUN aptitude install -y sec openssl
+RUN aptitude install -y sec openssl redis
 COPY prod.cfg /etc/
 RUN ln -sf /dev/stdout /var/log/product.log && mkdir /var/log/nginx/
 
