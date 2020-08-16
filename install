@@ -6,7 +6,7 @@ buildlocal () {
     chmod +x secp384r1.cgi
   fi
   docker build -t 127.0.0.1:5000/eaas-api-e/"$1" .
-  docker push 127.0.0.1:5000/eaas-api-e/"$1
+  docker push 127.0.0.1:5000/eaas-api-e/"$1"
   cd ..
 }
 
@@ -27,6 +27,9 @@ chmod 777 /srv/persist/ACCOUNT/htdocs
 
 chmod +x ACCOUNT-api || echo "WARN: no default backend ACCOUNT-api found found in $(pwd)"
 cp ACCOUNT-api /srv/persist/ACCOUNT/bin/ || echo "WARN: the default backend was not copied to /srv/persist/ACCOUNT/bin/"
+
+chmod +x run
+chmod +x buildrepo
 
 yum install -y yum-utils
 yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
