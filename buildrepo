@@ -5,8 +5,8 @@ buildlocal () {
   if [ "$1" = eacgi ]; then
     chmod +x secp384r1.cgi
   fi
-  docker build -t PRIVATEREPO/eaas-api-e/"$1" .
-  docker push PRIVATEREPO/eaas-api-e/"$1"
+  docker build -t PRIVATEREGISTRY/eaas-api-e/"$1" .
+  docker push PRIVATEREGISTRY/eaas-api-e/"$1"
   cd ..
 }
 
