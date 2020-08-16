@@ -18,12 +18,7 @@ mkdir -p /srv/persist/ACCOUNT/var/tmp/
 mkdir -p /srv/persist/ACCOUNT/log/cgi/ 
 mkdir -p /srv/persist/ACCOUNT/htdocs/
 
-echo "WARN: opening up /srv/persist/ACCOUNT/www/transfer to 777 permissions for sftp users!"
-chmod 777 /srv/persist/ACCOUNT/www/transfer 
-echo "WARN: opening up /srv/persist/ACCOUNT/aapche-logs to 777 permissions for webserver system users!"
-chmod 777 /srv/persist/ACCOUNT/apache-logs
-echo "WARN: opening up /srv/persist/ACCOUNT/htdocs/s to 777 permissions for webserver system users!"
-chmod 777 /srv/persist/ACCOUNT/htdocs
+chmod -R 777 /srv/persist/ACCOUNT/*
 
 chmod +x ACCOUNT-api || echo "WARN: no default backend ACCOUNT-api found found in $(pwd)"
 cp ACCOUNT-api /srv/persist/ACCOUNT/bin/ || echo "WARN: the default backend was not copied to /srv/persist/ACCOUNT/bin/"
