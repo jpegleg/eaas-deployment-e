@@ -29,3 +29,4 @@ docker run -v /srv/persist/ACCOUNT/var/tmp/:/var/tmp/ -v /srv/persist/ACCOUNT/lo
 
 docker run --net dockernetwork -d --restart unless-stopped -p 30444:666 PRIVATEREGISTRY/eaas-api-e/eaproxy || docker run --net dockernetwork -d --restart unless-stopped -p 30444:666 127.0.0.1:5000/eaas-api-e/eaproxy
 docker run --net dockernetwork -d --restart unless-stopped -p 30442:642 PRIVATEREGISTRY/eaas-api-e/eacgiproxy || docker run --net dockernetwork -d --restart unless-stopped -p 30442:642 127.0.0.1:5000/eaas-api-e/eacgiproxy
+
