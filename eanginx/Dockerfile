@@ -1,5 +1,5 @@
 FROM nginx:latest
-LABEL maintainer="carefuldata@protonmail.com""
+LABEL maintainer="carefuldata@protonmail.com"
 LABEL version="1.0"
 LABEL description="NGINX web server for Eaas API"
 
