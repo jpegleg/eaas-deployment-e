@@ -3,7 +3,7 @@
 # the uglies deployment file? perhaps
 # but it is fault tolerant machine editable ( those long lines are nice for sed and grep edits and tooling )
 
-# replace us-sea-dns-1.site:666 with your private registry:port etc
+# replace REGISTRY:666 with your private registry:port etc
 
 docker run -v /srv/persist/ACCOUNT/www/:/home/transfer/portal -d --restart unless-stopped -p 30023:22 REGISTRY:666/eaas-api-e/eatransfer || docker run -v /srv/persist/ACCOUNT/www/:/home/transfer/portal -d --restart unless-stopped -p 30023:22 127.0.0.1:5000/eaas-api-e/eatransfer
 
