@@ -1,5 +1,5 @@
 # eaas-deployment-e
-EasS API deployment "e" template on CentOS 7 or 8. 
+EasS API deployment "e" template on linux with docker for a single node.
 
 This is a collection of docker containers and a few scripts, used as a starting place template.
 
@@ -11,4 +11,6 @@ This one is set up for using docker local networks for the backend within the de
 
 There are CGI script examples in the eacgi container.
 
-Also see https://github.com/jpegleg/eaas-deployment-d
+Also see 
+https://github.com/jpegleg/eaas-deployment-d 
+https://github.com/jpegleg/eaas-deployment-f
